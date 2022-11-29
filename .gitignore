@@ -15,3 +15,8 @@ web-build/
 coverage/**/*
 
 .idea/
+
+result
+.direnv
+.envrc
+build/
