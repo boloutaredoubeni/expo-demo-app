@@ -9,7 +9,7 @@ import {
   stopTimer,
   TimerSlice
 } from './timer.slice'
-import {RootState} from "./timer.store";
+import {RootState} from "../../app/store";
 
 
 const middleware = createListenerMiddleware()

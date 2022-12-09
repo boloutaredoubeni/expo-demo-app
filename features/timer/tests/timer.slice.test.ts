@@ -7,7 +7,7 @@ import reducer, {
     stepTimer,
     stopTimer,
     TimerSlice
-} from './timer.slice'
+} from '../timer.slice'
 
 describe('timer reducer', () => {
     it('should handle initial state', () => {

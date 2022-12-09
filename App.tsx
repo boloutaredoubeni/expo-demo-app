@@ -1,12 +1,11 @@
 
-import timerStore from './app/timer.store'
-import Home from './app/Home'
+import store from './app/store'
+import Home from './features/timer/Home'
 import {Provider} from 'react-redux'
 
 export default function App() {
 
-
-    return (<Provider store={timerStore}>
+    return (<Provider store={store}>
         <Home/>
     </Provider>)
 }

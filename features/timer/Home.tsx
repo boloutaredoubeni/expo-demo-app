@@ -1,4 +1,4 @@
-import {useAppDispatch, useAppSelector} from './hooks'
+import {useAppDispatch, useAppSelector} from '../../app/hooks'
 import {Pressable, StyleSheet, Text, View} from 'react-native'
 import {StatusBar} from 'expo-status-bar'
 import {
@@ -52,10 +52,10 @@ export default function Home() {
         {paused && <Pressable onPress={onResume} testID="resume-button">
             <Text>Resume</Text>
         </Pressable>}
-        {running && <Pressable onPress={onPause} testID="start-button">
+        {running && <Pressable onPress={onPause} testID="pause-button">
             <Text>Pause</Text>
         </Pressable>}
-        <Pressable onPress={onReset}><Text>RESET</Text></Pressable>
+        <Pressable onPress={onReset} testID="reset-button"><Text>RESET</Text></Pressable>
         <StatusBar style="auto"/>
     </View>)
 }

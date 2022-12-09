@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {RootState} from "./timer.store";
+import {RootState} from "../../app/store";
 
 export interface TimerSlice {
   mode: 'working' | 'resting' | 'none';
@@ -13,8 +13,8 @@ const initialState: TimerSlice = {
   time: 0,
 }
 
-export const WORKING_DURATION = 1000 * 60 * 0.5;
-export const RESTING_DURATION = 1000 * 60  * 0.1;
+export const WORKING_DURATION = 1000 * 60 * 25;
+export const RESTING_DURATION = 1000 * 60  * 5;
 
 export const timerSlice = createSlice({
   name: 'state', initialState, reducers: {
