@@ -1,0 +1,14 @@
+name: "Macos"
+on:
+  pull_request:
+  push:
+    branches:
+      - nix-support
+jobs:
+  tests:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v18
+      - run: nix build
+      - run: nix flake check

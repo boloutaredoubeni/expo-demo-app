@@ -20,3 +20,6 @@ result
 .direnv
 .envrc
 build/
+.devenv
+
+.pre-commit-config.yaml
