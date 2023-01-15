@@ -3,7 +3,7 @@ on:
   pull_request:
   push:
     branches:
-      - nix-support
+      - main
 jobs:
   tests:
     runs-on: macos-latest
