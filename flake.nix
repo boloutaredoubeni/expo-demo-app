@@ -2,12 +2,20 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
 
+    # Precisely filter files copied to the nix store
+    nix-filter.url = "github:numtide/nix-filter";
+
     devenv.url = "github:cachix/devenv/v0.5";
 
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
+
+    dream2nix.url = "github:nix-community/dream2nix";
+
+    gitignore.url = "github:hercules-ci/gitignore.nix";
   };
 
-  outputs = { self, nixpkgs, devenv, pre-commit-hooks, ... }@inputs:
+  outputs = { self, nixpkgs, devenv, pre-commit-hooks, dream2nix, gitignore
+    , nix-filter, ... }@inputs:
     let
       systems =
         [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
@@ -16,8 +24,28 @@
           inherit name;
           value = f name;
         }) systems);
-    in {
-      devShells = forAllSystems (system:
+      sources = {
+        node = gitignore.lib.gitignoreSource (nix-filter.lib {
+          root = ./.;
+          include = [
+            (nix-filter.lib.matchExt "json")
+            (nix-filter.lib.matchExt "js")
+            (nix-filter.lib.matchExt "ts")
+            (nix-filter.lib.matchExt "tsx")
+            (nix-filter.lib.inDirectory "app")
+            (nix-filter.lib.inDirectory "assets")
+            (nix-filter.lib.inDirectory "features")
+          ];
+        });
+      };
+      dream2nixOutputs = dream2nix.lib.makeFlakeOutputs {
+        inherit systems;
+        config.projectRoot = ./.;
+        source = sources.node;
+        projects = ./projects.toml;
+      };
+
+      customOutput = forAllSystems (system:
         let pkgs = import nixpkgs { inherit system; };
         in {
           checks = {
@@ -31,7 +59,7 @@
               };
             };
           };
-          default = devenv.lib.mkShell {
+          devShells = devenv.lib.mkShell {
             inherit inputs pkgs;
             modules = [{
 
@@ -47,9 +75,9 @@
               languages.nix.enable = true;
 
               # https://devenv.sh/reference/options/
-              packages = [ pkgs.git pkgs.act ];
+              packages = [ pkgs.git pkgs.act pkgs.nixpkgs-fmt ];
             }];
           };
         });
-    };
+    in nixpkgs.lib.recursiveUpdate dream2nixOutputs customOutput;
 }
