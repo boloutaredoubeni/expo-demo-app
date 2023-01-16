@@ -16,3 +16,5 @@ translator = "package-lock"
 translators = [ "package-lock", "package-json",]
 
 [expo-demo-app.subsystemInfo]
+noDev = true
+nodejs = 18

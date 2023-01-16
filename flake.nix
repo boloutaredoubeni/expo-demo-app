@@ -28,6 +28,7 @@
         node = gitignore.lib.gitignoreSource (nix-filter.lib {
           root = ./.;
           include = [
+            "projects.toml"
             (nix-filter.lib.matchExt "json")
             (nix-filter.lib.matchExt "js")
             (nix-filter.lib.matchExt "ts")
@@ -58,6 +59,7 @@
                 statix.enable = true;
               };
             };
+
           };
           devShells = devenv.lib.mkShell {
             inherit inputs pkgs;
