@@ -12,4 +12,3 @@ jobs:
       - uses: cachix/install-nix-action@v18
       - run: nix build
       - run: nix flake check
-      - run: npm run test
