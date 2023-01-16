@@ -60,6 +60,10 @@
               };
             };
 
+            jest = pkgs.runCommand "jest" { } ''
+              ${pkgs.nodejs}/bin/npm install 
+              ${pkgs.nodejs}/bin/npm run test
+            '';
           };
           devShells = devenv.lib.mkShell {
             inherit inputs pkgs;
