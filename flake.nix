@@ -49,27 +49,19 @@
       customOutput = forAllSystems (system:
         let pkgs = import nixpkgs { inherit system; };
         in {
-          checks = {
-            pre-commit-check = pre-commit-hooks.lib.${system}.run {
-              src = ./.;
-              hooks = {
-                nixpkgs-fmt.enable = true;
-                yamllint.enable = true;
-                eslint.enable = true;
-                statix.enable = true;
-              };
-            };
-          };
 
           devShells = devenv.lib.mkShell {
             inherit inputs pkgs;
             modules = [{
+
+              pre-commit.settings.deadnix.edit = true;
 
               pre-commit.hooks = {
                 eslint.enable = true;
                 statix.enable = true;
                 nixfmt.enable = true;
                 yamllint.enable = true;
+                deadnix.enable = true;
               };
               devcontainer.enable = true;
               difftastic.enable = true;
@@ -78,6 +70,11 @@
 
               # https://devenv.sh/reference/options/
               packages = [ pkgs.git pkgs.act pkgs.nixpkgs-fmt ];
+
+              enterShell = ''
+                echo "Node version: $(node --version)"
+                echo "Node can be found at: $(which node)"
+              '';
             }];
           };
         });
